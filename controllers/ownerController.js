@@ -1,5 +1,35 @@
 const db = require("../database.js");
 
+    // Function to get data from both medications and customers tables
+        const getAllData = (req, res) => {
+            const medicationsQuery = 'SELECT * FROM medicines';
+            const customersQuery = 'SELECT * FROM customers';
+
+            // Execute both queries in parallel
+            db.all(medicationsQuery, [], (medicationErr, medicines) => {
+                if (medicationErr) {
+                    console.error(medicationErr.message);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+
+                db.all(customersQuery, [], (customerErr, customers) => {
+                    if (customerErr) {
+                        console.error(customerErr.message);
+                        return res.status(500).json({ error: 'Internal Server Error' });
+                    }
+
+                    // Combine medication and customer data
+                    const data = {
+                        medicines: medicines,
+                        customers: customers
+                    };
+
+                    // Send combined data as response
+                    res.json({ data });
+                });
+            });
+        };
+
     //Function to get all medicines
         const getAllMedications = (req, res) => {
             // SQL query to retrieve all medication records
@@ -176,6 +206,8 @@ const db = require("../database.js");
     };
 
 module.exports = {
+        getAllData,
+
         getAllMedications,
         insertMedication,
         updateMedication,
