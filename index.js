@@ -3,9 +3,9 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const db = require("./database.js")
-//const db = new sqlite3.Database('./db.sqlite');
 
 const authenticationRoutes = require('./routes/authRoutes');
+const ownersRoutes = require('./routes/ownerRoutes.js');
 
 const PORT = process.env.PORT || 3000;
 
@@ -13,6 +13,8 @@ app.use(bodyParser.json());
 
 // Mount route modules
 app.use('/api/auth', authenticationRoutes);
+
+app.use('/api/owner', ownersRoutes);
 
 // Test route
 app.get('/', (req, res) => {

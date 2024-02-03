@@ -1,5 +1,22 @@
 const db = require("../database.js");
 
+    //Function to get all medicines
+        const getAllMedications = (req, res) => {
+            // SQL query to retrieve all medication records
+            const sql = 'SELECT * FROM medicines';
+        
+            // Execute the SQL query
+            db.all(sql, [], (err, medicines) => {
+                if (err) {
+                    console.error(err.message);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+                
+                // Return the retrieved medication records as JSON response
+                res.json({ medicines });
+            });
+        };
+
     // Function to insert a new medication record
     const insertMedication = (req, res) => {
         const { name, description, quantity } = req.body;
@@ -56,7 +73,7 @@ const db = require("../database.js");
     // Function to permanently delete a medication record
     const deleteMedication = (req, res) => {
         const { id } = req.params;
-
+    
         // SQL query to permanently delete the medication record
         const sql = 'DELETE FROM medicines WHERE id = ?';
 
@@ -69,6 +86,25 @@ const db = require("../database.js");
             res.json({ message: 'Medication record permanently deleted successfully' });
         });
     };
+
+/////// CUSTOMER API 
+
+    //Function to get all the customers
+        const getAllCustomers = (req, res) => {
+            // SQL query to retrieve all medication records
+            const sql = 'SELECT * FROM customers';
+        
+            // Execute the SQL query
+            db.all(sql, [], (err, customers) => {
+                if (err) {
+                    console.error(err.message);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+                
+                // Return the retrieved medication records as JSON response
+                res.json({ customers });
+            });
+        };
 
     // Function to insert a new customer record
     const insertCustomer = (req, res) => {
@@ -140,10 +176,13 @@ const db = require("../database.js");
     };
 
 module.exports = {
+        getAllMedications,
         insertMedication,
         updateMedication,
         softDeleteMedication,
         deleteMedication,
+
+        getAllCustomers,
         insertCustomer,
         updateCustomer,
         softDeleteCustomer,
