@@ -88,7 +88,7 @@ const db = require("../database.js");
         const { id } = req.params;
 
         // SQL query to soft delete the medication record
-        const sql = 'UPDATE medicines SET active = 0 WHERE id = ?';
+        const sql = 'UPDATE medicines SET active = FALSE WHERE id = ?';
 
         // Execute the query
         db.run(sql, [id], (err) => {
@@ -176,7 +176,7 @@ const db = require("../database.js");
         const { id } = req.params;
 
         // SQL query to soft delete the customer record
-        const sql = 'UPDATE customers SET is_deleted = 1 WHERE id = ?';
+        const sql = 'UPDATE customers SET active = FALSE WHERE id = ?';
 
         // Execute the query
         db.run(sql, [id], (err) => {
