@@ -108,13 +108,13 @@ const db = require("../database.js");
 
     // Function to insert a new customer record
     const insertCustomer = (req, res) => {
-        const { name, email, phone } = req.body;
+        const { name, disease , age } = req.body;
 
         // SQL query to insert a new customer record
-        const sql = 'INSERT INTO customers (name, email, phone) VALUES (?, ?, ?)';
+        const sql = 'INSERT INTO customers (name, disease,age) VALUES (?, ?, ?)';
 
         // Execute the query
-        db.run(sql, [name, email, phone], (err) => {
+        db.run(sql, [name, disease,age], (err) => {
             if (err) {
                 console.error(err.message);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -125,14 +125,14 @@ const db = require("../database.js");
 
     // Function to update an existing customer record
     const updateCustomer = (req, res) => {
-        const { name, email, phone } = req.body;
+        const { name, disease , age } = req.body;
         const { id } = req.params;
 
         // SQL query to update the customer record
-        const sql = 'UPDATE customers SET name = ?, email = ?, phone = ? WHERE id = ?';
+        const sql = 'UPDATE customers SET name = ?, disease  = ? , age = ? WHERE id = ?';
 
         // Execute the query
-        db.run(sql, [name, email, phone, id], (err) => {
+        db.run(sql, [name,  disease , age, id], (err) => {
             if (err) {
                 console.error(err.message);
                 return res.status(500).json({ error: 'Internal Server Error' });
