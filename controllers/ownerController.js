@@ -1,34 +1,21 @@
 const db = require("../database.js");
 
-    // Function to get data from both medications and customers tables
-        const getAllData = (req, res) => {
-            const medicationsQuery = 'SELECT * FROM medicines';
-            const customersQuery = 'SELECT * FROM customers';
+    // Function to get all active medicines
+    const getActiveMedications = (req, res) => {
+        // SQL query to retrieve active medication records
+        const sql = 'SELECT * FROM medicines WHERE active = TRUE';
 
-            // Execute both queries in parallel
-            db.all(medicationsQuery, [], (medicationErr, medicines) => {
-                if (medicationErr) {
-                    console.error(medicationErr.message);
-                    return res.status(500).json({ error: 'Internal Server Error' });
-                }
+        // Execute the SQL query with the status parameter set to true
+        db.all(sql,[], (err, medicines) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
 
-                db.all(customersQuery, [], (customerErr, customers) => {
-                    if (customerErr) {
-                        console.error(customerErr.message);
-                        return res.status(500).json({ error: 'Internal Server Error' });
-                    }
-
-                    // Combine medication and customer data
-                    const data = {
-                        medicines: medicines,
-                        customers: customers
-                    };
-
-                    // Send combined data as response
-                    res.json({ data });
-                });
-            });
-        };
+            // Return the retrieved medication records as JSON response
+            res.json({ medicines });
+        });
+    };
 
     //Function to get all medicines
         const getAllMedications = (req, res) => {
@@ -119,6 +106,23 @@ const db = require("../database.js");
 
 /////// CUSTOMER API 
 
+        // Function to get all active customers
+        const getActiveCustomers = (req, res) => {
+            // SQL query to retrieve active customer records
+            const sql = 'SELECT * FROM customers WHERE active = TRUE';
+
+            // Execute the SQL query with the status parameter set to true
+            db.all(sql, [], (err, customers) => {
+                if (err) {
+                    console.error(err.message);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+
+                // Return the retrieved customer records as JSON response
+                res.json({ customers });
+            });
+        };
+
     //Function to get all the customers
         const getAllCustomers = (req, res) => {
             // SQL query to retrieve all medication records
@@ -138,13 +142,13 @@ const db = require("../database.js");
 
     // Function to insert a new customer record
     const insertCustomer = (req, res) => {
-        const { name, disease , age } = req.body;
+        const { name, disease , age, prescribed_medicine } = req.body;
 
         // SQL query to insert a new customer record
-        const sql = 'INSERT INTO customers (name, disease,age) VALUES (?, ?, ?)';
+        const sql = 'INSERT INTO customers (name, disease,age,prescribed_medicine) VALUES (?, ?, ?,?)';
 
         // Execute the query
-        db.run(sql, [name, disease,age], (err) => {
+        db.run(sql, [name, disease,age,prescribed_medicine], (err) => {
             if (err) {
                 console.error(err.message);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -155,14 +159,14 @@ const db = require("../database.js");
 
     // Function to update an existing customer record
     const updateCustomer = (req, res) => {
-        const { name, disease , age } = req.body;
+        const { name, disease , age,prescribed_medicine } = req.body;
         const { id } = req.params;
 
         // SQL query to update the customer record
-        const sql = 'UPDATE customers SET name = ?, disease  = ? , age = ? WHERE id = ?';
+        const sql = 'UPDATE customers SET name = ?, disease  = ? , age = ? ,prescribed_medicine = ? WHERE id = ?';
 
         // Execute the query
-        db.run(sql, [name,  disease , age, id], (err) => {
+        db.run(sql, [name,  disease , age,prescribed_medicine, id], (err) => {
             if (err) {
                 console.error(err.message);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -206,7 +210,8 @@ const db = require("../database.js");
     };
 
 module.exports = {
-        getAllData,
+        getActiveMedications,
+        getActiveCustomers,
 
         getAllMedications,
         insertMedication,
