@@ -2,10 +2,8 @@ const db = require("../database.js");
 
     // Function to get all active medicines
     const getActiveMedications = (req, res) => {
-        // SQL query to retrieve active medication records
         const sql = 'SELECT * FROM medicines WHERE active = TRUE';
 
-        // Execute the SQL query with the status parameter set to true
         db.all(sql,[], (err, medicines) => {
             if (err) {
                 console.error(err.message);
@@ -19,10 +17,8 @@ const db = require("../database.js");
 
     //Function to get all medicines
         const getAllMedications = (req, res) => {
-            // SQL query to retrieve all medication records
             const sql = 'SELECT * FROM medicines';
-        
-            // Execute the SQL query
+
             db.all(sql, [], (err, medicines) => {
                 if (err) {
                     console.error(err.message);
@@ -94,7 +90,6 @@ const db = require("../database.js");
         // SQL query to permanently delete the medication record
         const sql = 'DELETE FROM medicines WHERE id = ?';
 
-        // Execute the query
         db.run(sql, [id], (err) => {
             if (err) {
                 console.error(err.message);
@@ -111,7 +106,6 @@ const db = require("../database.js");
             // SQL query to retrieve active customer records
             const sql = 'SELECT * FROM customers WHERE active = TRUE';
 
-            // Execute the SQL query with the status parameter set to true
             db.all(sql, [], (err, customers) => {
                 if (err) {
                     console.error(err.message);

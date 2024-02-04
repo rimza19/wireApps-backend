@@ -18,7 +18,7 @@ app.use('/api', ownersRoutes);
 
 // Test route
 app.get('/', (req, res) => {
-  res.send('Pharmacy Management System API');
+  res.send('Pharmacy API');
 });
 
 app.listen(PORT, () => {
