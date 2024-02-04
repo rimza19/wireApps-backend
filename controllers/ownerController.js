@@ -3,10 +3,10 @@ const db = require("../database.js");
     // Function to get all active medicines
     const getActiveMedications = (req, res) => {
         // SQL query to retrieve active medication records
-        const sql = 'SELECT * FROM medicines WHERE status = ?';
+        const sql = 'SELECT * FROM medicines WHERE active = TRUE';
 
         // Execute the SQL query with the status parameter set to true
-        db.all(sql, [true], (err, medicines) => {
+        db.all(sql,[], (err, medicines) => {
             if (err) {
                 console.error(err.message);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -106,6 +106,23 @@ const db = require("../database.js");
 
 /////// CUSTOMER API 
 
+        // Function to get all active customers
+        const getActiveCustomers = (req, res) => {
+            // SQL query to retrieve active customer records
+            const sql = 'SELECT * FROM customers WHERE active = TRUE';
+
+            // Execute the SQL query with the status parameter set to true
+            db.all(sql, [], (err, customers) => {
+                if (err) {
+                    console.error(err.message);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+
+                // Return the retrieved customer records as JSON response
+                res.json({ customers });
+            });
+        };
+
     //Function to get all the customers
         const getAllCustomers = (req, res) => {
             // SQL query to retrieve all medication records
@@ -194,6 +211,7 @@ const db = require("../database.js");
 
 module.exports = {
         getActiveMedications,
+        getActiveCustomers,
 
         getAllMedications,
         insertMedication,
