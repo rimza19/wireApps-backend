@@ -11,6 +11,15 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
     } else {
         console.log('Connected to the SQLite database.');
 
+        // Enable foreign key constraints
+        db.run('PRAGMA foreign_keys = ON;', function(err) {
+            if (err) {
+                console.error('Error enabling foreign key constraints:', err.message);
+            } else {
+                console.log('Foreign key constraints enabled successfully.');
+            }
+        });
+
         // Create the users table if it doesn't exist
         db.run(`CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +73,7 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
         //creating the medicine table
         db.run(`CREATE TABLE IF NOT EXISTS medicines (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
+            name TEXT UNIQUE NOT NULL,
             description TEXT,
             quantity INTEGER NOT NULL DEFAULT 0,
             active BOOLEAN DEFAULT TRUE
@@ -82,7 +91,9 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
             name TEXT NOT NULL,
             disease TEXT,
             age INTEGER NOT NULL,
-            active BOOLEAN DEFAULT TRUE
+            active BOOLEAN DEFAULT TRUE,
+            prescribed_medicine TEXT NOT NULL, 
+            FOREIGN KEY (prescribed_medicine) REFERENCES medicines(name)
         )`, async (err) => {
             if (err) {
                 console.error(err.message);
