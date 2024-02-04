@@ -7,8 +7,6 @@ const db = require("./database.js")
 const authenticationRoutes = require('./routes/authRoutes');
 const ownersRoutes = require('./routes/ownerRoutes.js');
 
-//const defaultRoutes = require('./routes/defaultRoutes.js')
-
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
@@ -17,8 +15,6 @@ app.use(bodyParser.json());
 app.use('/api/auth', authenticationRoutes);
 
 app.use('/api', ownersRoutes);
-
-//app.use('/api', defaultRoutes);
 
 // Test route
 app.get('/', (req, res) => {
