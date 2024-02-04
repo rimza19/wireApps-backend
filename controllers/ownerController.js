@@ -1,34 +1,21 @@
 const db = require("../database.js");
 
-    // Function to get data from both medications and customers tables
-        const getAllData = (req, res) => {
-            const medicationsQuery = 'SELECT * FROM medicines';
-            const customersQuery = 'SELECT * FROM customers';
+    // Function to get all active medicines
+    const getActiveMedications = (req, res) => {
+        // SQL query to retrieve active medication records
+        const sql = 'SELECT * FROM medicines WHERE status = ?';
 
-            // Execute both queries in parallel
-            db.all(medicationsQuery, [], (medicationErr, medicines) => {
-                if (medicationErr) {
-                    console.error(medicationErr.message);
-                    return res.status(500).json({ error: 'Internal Server Error' });
-                }
+        // Execute the SQL query with the status parameter set to true
+        db.all(sql, [true], (err, medicines) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
 
-                db.all(customersQuery, [], (customerErr, customers) => {
-                    if (customerErr) {
-                        console.error(customerErr.message);
-                        return res.status(500).json({ error: 'Internal Server Error' });
-                    }
-
-                    // Combine medication and customer data
-                    const data = {
-                        medicines: medicines,
-                        customers: customers
-                    };
-
-                    // Send combined data as response
-                    res.json({ data });
-                });
-            });
-        };
+            // Return the retrieved medication records as JSON response
+            res.json({ medicines });
+        });
+    };
 
     //Function to get all medicines
         const getAllMedications = (req, res) => {
@@ -206,7 +193,7 @@ const db = require("../database.js");
     };
 
 module.exports = {
-        getAllData,
+        getActiveMedications,
 
         getAllMedications,
         insertMedication,
