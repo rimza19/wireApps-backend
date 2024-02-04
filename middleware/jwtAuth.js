@@ -34,7 +34,7 @@ const checkRole = (allowedRoles) => {
             next();
         } else {
             // User is not authorized, send a forbidden response
-            res.status(403).json({ success: false, message: 'Forbidden' });
+            res.status(403).json({ success: false, message: 'No Access' });
         }
     };
 };

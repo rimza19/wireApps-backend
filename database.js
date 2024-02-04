@@ -75,7 +75,7 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
                 console.log('Medicines table created successfully.');
             }
         } )
-
+        
         //creating the customer table
         db.run(`CREATE TABLE IF NOT EXISTS customers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
